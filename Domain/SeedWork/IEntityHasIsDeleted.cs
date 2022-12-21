@@ -4,7 +4,7 @@
 	{
 		bool IsDeleted { get; set; }
 
-		System.DateTime DeleteDateTime { get; }
+		System.DateTime? DeleteDateTime { get; }
 
 		void SetDeleteDateTime();
 	}

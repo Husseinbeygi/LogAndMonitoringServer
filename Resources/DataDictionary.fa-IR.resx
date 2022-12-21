@@ -385,13 +385,13 @@
     <value>تنظیمات</value>
   </data>
   <data name="SiteAuthor" xml:space="preserve">
-    <value>داریوش تصدیقی</value>
+    <value>حسین بیگی</value>
   </data>
   <data name="Sites" xml:space="preserve">
     <value>سایت‌ها</value>
   </data>
   <data name="SiteTitle" xml:space="preserve">
-    <value>متخصصین ایرانی</value>
+    <value>سیستم مانیتورینگ</value>
   </data>
   <data name="SocialNetworks" xml:space="preserve">
     <value>شبکه‌های اجتماعی</value>
@@ -473,5 +473,23 @@
   </data>
   <data name="LastLoginDateTime" xml:space="preserve">
     <value>زمان آخرین ورود به سامانه</value>
+  </data>
+  <data name="Cluster" xml:space="preserve">
+    <value>خوشه</value>
+  </data>
+  <data name="Owner" xml:space="preserve">
+    <value>مالک</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>آدرس</value>
+  </data>
+  <data name="Device" xml:space="preserve">
+    <value>دستگاه</value>
+  </data>
+  <data name="Clusters" xml:space="preserve">
+    <value>خوشه ها</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>دستگاه ها</value>
   </data>
 </root>

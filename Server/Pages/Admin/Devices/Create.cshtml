@@ -1,0 +1,100 @@
+﻿@page
+@model Server.Pages.Admin.Devices.CreateModel
+
+@{
+	var pageTitle =
+		$"{Resources.ButtonCaptions.Create} {Resources.DataDictionary.Device}";
+
+	ViewData[Constants.ViewDataKeyName.PageTitle] = pageTitle;
+}
+
+<form method="post">
+
+	<section-form>
+		<fieldset>
+			<section-form-header>
+				@(pageTitle)
+			</section-form-header>
+
+			<partial name="PartialViews/_DisplayPageMessages" />
+
+			<section-form-field>
+				<label asp-for="ViewModel.Title"></label>
+				<input asp-for="ViewModel.Title" />
+				<span asp-validation-for="ViewModel.Title"></span>
+			</section-form-field>
+
+			<section-form-field>
+				<label asp-for="ViewModel.ClusterId"></label>
+
+				<select asp-for="ViewModel.Protcol">
+					<option value="https" selected>
+						HTTPS
+					</option>
+					<option value="http">
+						HTTP
+					</option>
+				</select>
+
+				<span asp-validation-for="ViewModel.ClusterId"></span>
+			</section-form-field>
+
+			<section-form-field>
+				<label asp-for="ViewModel.Url"></label>
+				<input asp-for="ViewModel.Url" />
+				<span asp-validation-for="ViewModel.Url"></span>
+			</section-form-field>
+
+			<section-form-field>
+				<label asp-for="ViewModel.Port"></label>
+				<input asp-for="ViewModel.Port" />
+				<span asp-validation-for="ViewModel.Port"></span>
+			</section-form-field>
+
+			<section-form-field>
+				<label asp-for="ViewModel.ClusterId"></label>
+
+				<select asp-for="ViewModel.ClusterId"
+						asp-items="@(new SelectList(Model.RolesViewModel,
+						nameof(ViewModels.Shared.KeyValueViewModel.Id),
+						nameof(ViewModels.Shared.KeyValueViewModel.Name)))"
+						class="form-select">
+
+					<option value="@(null)" selected>
+						@(Resources.DataDictionary.WithoutRole)
+					</option>
+				</select>
+
+				<span asp-validation-for="ViewModel.ClusterId"></span>
+			</section-form-field>
+
+			<section-form-check>
+				<input asp-for="ViewModel.IsActive" />
+				<label asp-for="ViewModel.IsActive"></label>
+			</section-form-check>
+
+			<section-form-check>
+				<input asp-for="ViewModel.IsUndeletable" />
+				<label asp-for="ViewModel.IsUndeletable"></label>
+			</section-form-check>
+
+			<section-form-field>
+				<label asp-for="ViewModel.Description"></label>
+				<textarea asp-for="ViewModel.Description"></textarea>
+				<span asp-validation-for="ViewModel.Description"></span>
+			</section-form-field>
+		</fieldset>
+
+		<section-form-buttons>
+			<button-create />
+			<button-reset />
+		</section-form-buttons>
+
+		<section-form-footer>
+			<a asp-page="Index">
+				@(Html.DtatGetLinkCaptionForList())
+			</a>
+		</section-form-footer>
+	</section-form>
+
+</form>

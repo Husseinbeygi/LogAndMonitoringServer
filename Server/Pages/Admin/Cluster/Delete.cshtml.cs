@@ -2,30 +2,35 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Server.Pages.Admin.Roles;
+namespace Server.Pages.Admin.Cluster;
 
 [Microsoft.AspNetCore.Authorization
 	.Authorize(Roles = Constants.Role.Admin)]
 public class DeleteModel : Infrastructure.BasePageModelWithDatabaseContext
 {
-	public DeleteModel
-		(Data.DatabaseContext databaseContext,
+	#region Constructor(s)
+	public DeleteModel(Data.DatabaseContext databaseContext,
 		Microsoft.Extensions.Logging.ILogger<DeleteModel> logger) :
 		base(databaseContext: databaseContext)
 	{
 		Logger = logger;
+
 		ViewModel = new();
 	}
+	#endregion /Constructor(s)
 
+	#region Porperty(ies)
 	// **********
 	private Microsoft.Extensions.Logging.ILogger<DeleteModel> Logger { get; }
 	// **********
 
 	// **********
 	[Microsoft.AspNetCore.Mvc.BindProperty]
-	public ViewModels.Pages.Admin.Roles.DetailsOrDeleteViewModel ViewModel { get; private set; }
+	public ViewModels.Pages.Admin.Cluster.DetailsOrDeleteViewModel ViewModel { get; private set; }
 	// **********
+	#endregion /Porperty(ies)
 
+	#region OnGetAsync
 	public async System.Threading.Tasks.Task
 		<Microsoft.AspNetCore.Mvc.IActionResult> OnGetAsync(System.Guid? id)
 	{
@@ -41,18 +46,13 @@ public class DeleteModel : Infrastructure.BasePageModelWithDatabaseContext
 
 			ViewModel =
 				await
-				DatabaseContext.Roles
+				DatabaseContext.Cluster
 				.Where(current => current.Id == id.Value)
-				.Select(current => new ViewModels.Pages.Admin.Roles.DetailsOrDeleteViewModel()
+				.Select(current => new ViewModels.Pages.Admin.Cluster.DetailsOrDeleteViewModel
 				{
 					Id = current.Id,
-					Name = current.Name,
-					IsActive = current.IsActive,
-					Ordering = current.Ordering,
-					UserCount = current.Users.Count,
-					Description = current.Description,
-					InsertDateTime = current.InsertDateTime,
-					UpdateDateTime = current.UpdateDateTime.Value,
+					Title = current.Title,
+					Description = current.Description,	
 				})
 				.FirstOrDefaultAsync();
 
@@ -81,47 +81,25 @@ public class DeleteModel : Infrastructure.BasePageModelWithDatabaseContext
 			await DisposeDatabaseContextAsync();
 		}
 	}
+	#endregion /OnGetAsync
 
+	#region OnPostAsync
 	public async System.Threading.Tasks.Task
 		<Microsoft.AspNetCore.Mvc.IActionResult> OnPostAsync(System.Guid? id)
 	{
+		if (id.HasValue == false)
+		{
+			AddToastError
+				(message: Resources.Messages.Errors.IdIsNull);
+
+			return RedirectToPage(pageName: "Index");
+		}
+
 		try
 		{
-			// **************************************************
-			if (id.HasValue == false)
-			{
-				AddToastError
-					(message: Resources.Messages.Errors.IdIsNull);
-
-				return RedirectToPage(pageName: "Index");
-			}
-			// **************************************************
-
-			// **************************************************
-			var hasAnyChildren =
-				await
-				DatabaseContext.Users
-				.Where(current => current.RoleId == id.Value)
-				.AnyAsync();
-
-			if (hasAnyChildren)
-			{
-				// **************************************************
-				var errorMessage = string.Format
-					(format: Resources.Messages.Errors.CascadeDelete,
-					arg0: Resources.DataDictionary.Role);
-
-				AddToastError(message: errorMessage);
-				// **************************************************
-
-				return RedirectToPage(pageName: "Index");
-			}
-			// **************************************************
-
-			// **************************************************
 			var foundedItem =
 				await
-				DatabaseContext.Roles
+				DatabaseContext.Cluster
 				.Where(current => current.Id == id.Value)
 				.FirstOrDefaultAsync();
 
@@ -132,21 +110,18 @@ public class DeleteModel : Infrastructure.BasePageModelWithDatabaseContext
 
 				return RedirectToPage(pageName: "Index");
 			}
-			// **************************************************
 
-			// **************************************************
 			var entityEntry =
 				DatabaseContext.Remove(entity: foundedItem);
 
 			var affectedRows =
 				await
 				DatabaseContext.SaveChangesAsync();
-			// **************************************************
 
 			// **************************************************
 			var successMessage = string.Format
-				(format: Resources.Messages.Successes.Deleted,
-				arg0: Resources.DataDictionary.Role);
+				(Resources.Messages.Successes.Deleted,
+				Resources.DataDictionary.Cluster);
 
 			AddToastSuccess(message: successMessage);
 			// **************************************************
@@ -168,4 +143,5 @@ public class DeleteModel : Infrastructure.BasePageModelWithDatabaseContext
 			await DisposeDatabaseContextAsync();
 		}
 	}
+	#endregion /OnPostAsync
 }

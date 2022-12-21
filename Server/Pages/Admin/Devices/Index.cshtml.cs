@@ -1,15 +1,16 @@
-using System.Linq;
-using Microsoft.Extensions.Logging;
+using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System.Linq;
 
-namespace Server.Pages.Admin.Roles;
+namespace Server.Pages.Admin.Devices;
 
 [Microsoft.AspNetCore.Authorization
 	.Authorize(Roles = Constants.Role.Admin)]
 public class IndexModel : Infrastructure.BasePageModelWithDatabaseContext
 {
-	public IndexModel
-		(Data.DatabaseContext databaseContext,
+	#region Constructor(s)
+	public IndexModel(Data.DatabaseContext databaseContext,
 		Microsoft.Extensions.Logging.ILogger<IndexModel> logger) :
 		base(databaseContext: databaseContext)
 	{
@@ -17,71 +18,49 @@ public class IndexModel : Infrastructure.BasePageModelWithDatabaseContext
 
 		ViewModel =
 			new System.Collections.Generic.List
-			<ViewModels.Pages.Admin.Roles.IndexItemViewModel>();
+			<ViewModels.Pages.Admin.Device.IndexItemViewModel>();
 	}
+	#endregion /Constructor(s)
 
+	#region Property(ies)
 	// **********
 	private Microsoft.Extensions.Logging.ILogger<IndexModel> Logger { get; }
 	// **********
 
 	// **********
 	public System.Collections.Generic.IList
-		<ViewModels.Pages.Admin.Roles.IndexItemViewModel> ViewModel
+		<ViewModels.Pages.Admin.Device.IndexItemViewModel> ViewModel
 	{ get; private set; }
 	// **********
+	#endregion /Property(ies)
 
+	#region OnGetAsync
 	public async System.Threading.Tasks.Task
 		<Microsoft.AspNetCore.Mvc.IActionResult> OnGetAsync()
 	{
 		try
 		{
-			//ViewModel =
-			//	DatabaseContext.Roles
-			//	.ToList()
-			//	;
-
-			// SELECT * FROM Roles
-
-			//ViewModel =
-			//	await
-			//	DatabaseContext.Roles
-			//	.ToListAsync()
-			//	;
-
 			ViewModel =
 				await
-				DatabaseContext.Roles
+				DatabaseContext.Device
 				.OrderBy(current => current.Ordering)
-				.ThenBy(current => current.Name)
-				.Select(current => new ViewModels.Pages.Admin.Roles.IndexItemViewModel
+				.Select(current => new ViewModels.Pages.Admin.Device.IndexItemViewModel
 				{
 					Id = current.Id,
-					Name = current.Name,
+					Cluster = current.Cluster.Title,
 					IsActive = current.IsActive,
-					Ordering = current.Ordering,
-					UserCount = current.Users.Count,
+					IsSystemic = current.IsSystemic,
+					Address = $"{current.Protcol}://{current.Url}{GetPort(current)}",
+					IsUndeletable = current.IsUndeletable,
 					InsertDateTime = current.InsertDateTime,
 					UpdateDateTime = current.UpdateDateTime.Value,
 				})
+				.AsNoTracking()
 				.ToListAsync()
 				;
 		}
 		catch (System.Exception ex)
 		{
-			//Logger.Log
-			//	(logLevel: LogLevel.Error, message: ex.Message);
-
-			// LogError() -> using Microsoft.Extensions.Logging;
-			//Logger.LogError
-			//	(message: ex.Message);
-
-			//Logger.LogCritical();
-			//Logger.LogError();
-			//Logger.LogWarning();
-			//Logger.LogInformation();
-			//Logger.LogDebug();
-			//Logger.LogTrace();
-
 			Logger.LogError
 				(message: Constants.Logger.ErrorMessage, args: ex.Message);
 
@@ -95,4 +74,20 @@ public class IndexModel : Infrastructure.BasePageModelWithDatabaseContext
 
 		return Page();
 	}
+
+	private static string GetPort(Device current)
+	{
+		if (current.Port == 0 
+		|| current.Port == 80 
+		|| current.Port == 443)
+		{
+			return string.Empty;
+		}
+		else
+		{
+			return current.Port.ToString();
+
+		};
+	}
+	#endregion /OnGetAsync
 }

@@ -1,0 +1,46 @@
+﻿@page
+@model Server.Pages.Admin.Cluster.CreateModel
+
+@{
+	var pageTitle =
+		$"{Resources.ButtonCaptions.Create} {Resources.DataDictionary.Cluster}";
+
+	ViewData[Constants.ViewDataKeyName.PageTitle] = pageTitle;
+}
+
+<form method="post">
+
+	<section-form>
+		<fieldset>
+			<section-form-header>
+				@(pageTitle)
+			</section-form-header>
+
+			<partial name="PartialViews/_DisplayPageMessages" />
+
+			<section-form-field>
+				<label asp-for="ViewModel.Title"></label>
+				<input asp-for="ViewModel.Title" />
+				<span asp-validation-for="ViewModel.Title"></span>
+			</section-form-field>
+
+			<section-form-field>
+				<label asp-for="ViewModel.Description"></label>
+				<textarea asp-for="ViewModel.Description"></textarea>
+				<span asp-validation-for="ViewModel.Description"></span>
+			</section-form-field>
+		</fieldset>
+
+		<section-form-buttons>
+			<button-create />
+			<button-reset />
+		</section-form-buttons>
+
+		<section-form-footer>
+			<a asp-page="Index">
+				@(Html.DtatGetLinkCaptionForList())
+			</a>
+		</section-form-footer>
+	</section-form>
+
+</form>

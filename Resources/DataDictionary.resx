@@ -388,10 +388,10 @@
     <value>Settings</value>
   </data>
   <data name="SiteAuthor" xml:space="preserve">
-    <value>Dariush Tasdighi</value>
+    <value>Hussein Beygi</value>
   </data>
   <data name="SiteTitle" xml:space="preserve">
-    <value>Iranian Experts</value>
+    <value>Monitoring System</value>
   </data>
   <data name="SocialNetworks" xml:space="preserve">
     <value>Social Networks</value>
@@ -470,5 +470,23 @@
   </data>
   <data name="LastLoginDateTime" xml:space="preserve">
     <value>Last Login Date Time</value>
+  </data>
+  <data name="Cluster" xml:space="preserve">
+    <value>Cluster</value>
+  </data>
+  <data name="Owner" xml:space="preserve">
+    <value>Owner</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="Device" xml:space="preserve">
+    <value>Device</value>
+  </data>
+  <data name="Clusters" xml:space="preserve">
+    <value>Clusters</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>Devices</value>
   </data>
 </root>

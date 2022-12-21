@@ -2,14 +2,14 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Server.Pages.Admin.Roles;
+namespace Server.Pages.Admin.Cluster;
 
 [Microsoft.AspNetCore.Authorization
 	.Authorize(Roles = Constants.Role.Admin)]
 public class DetailsModel : Infrastructure.BasePageModelWithDatabaseContext
 {
-	public DetailsModel
-		(Data.DatabaseContext databaseContext,
+	#region Constructor(s)
+	public DetailsModel(Data.DatabaseContext databaseContext,
 		Microsoft.Extensions.Logging.ILogger<DetailsModel> logger) :
 		base(databaseContext: databaseContext)
 	{
@@ -17,15 +17,19 @@ public class DetailsModel : Infrastructure.BasePageModelWithDatabaseContext
 
 		ViewModel = new();
 	}
+	#endregion /Constructor(s)
 
+	#region Property(ies)
 	// **********
 	private Microsoft.Extensions.Logging.ILogger<DetailsModel> Logger { get; }
 	// **********
 
 	// **********
-	public ViewModels.Pages.Admin.Roles.DetailsOrDeleteViewModel ViewModel { get; private set; }
+	public ViewModels.Pages.Admin.Cluster.DetailsOrDeleteViewModel ViewModel { get; private set; }
 	// **********
+	#endregion /Property(ies)
 
+	#region OnGetAsync
 	public async System.Threading.Tasks.Task
 		<Microsoft.AspNetCore.Mvc.IActionResult> OnGetAsync(System.Guid? id)
 	{
@@ -41,19 +45,15 @@ public class DetailsModel : Infrastructure.BasePageModelWithDatabaseContext
 
 			ViewModel =
 				await
-				DatabaseContext.Roles
-				.Where(current => current.Id == id.Value)
-				.Select(current => new ViewModels.Pages.Admin.Roles.DetailsOrDeleteViewModel()
+				DatabaseContext.Cluster
+				.Where(current => current.Id == id)
+				.Select(current => new ViewModels.Pages.Admin.Cluster.DetailsOrDeleteViewModel
 				{
 					Id = current.Id,
-					Name = current.Name,
-					IsActive = current.IsActive,
-					Ordering = current.Ordering,
-					UserCount = current.Users.Count,
+					Title = current.Title,
 					Description = current.Description,
-					InsertDateTime = current.InsertDateTime,
-					UpdateDateTime = current.UpdateDateTime.Value,
 				})
+				.AsNoTracking()
 				.FirstOrDefaultAsync();
 
 			if (ViewModel == null)
@@ -81,4 +81,5 @@ public class DetailsModel : Infrastructure.BasePageModelWithDatabaseContext
 			await DisposeDatabaseContextAsync();
 		}
 	}
+	#endregion /OnGetAsync
 }

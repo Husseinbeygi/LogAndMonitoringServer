@@ -2,14 +2,14 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Server.Pages.Admin.Roles;
+namespace Server.Pages.Admin.Cluster;
 
 [Microsoft.AspNetCore.Authorization
 	.Authorize(Roles = Constants.Role.Admin)]
 public class IndexModel : Infrastructure.BasePageModelWithDatabaseContext
 {
-	public IndexModel
-		(Data.DatabaseContext databaseContext,
+	#region Constructor(s)
+	public IndexModel(Data.DatabaseContext databaseContext,
 		Microsoft.Extensions.Logging.ILogger<IndexModel> logger) :
 		base(databaseContext: databaseContext)
 	{
@@ -17,71 +17,44 @@ public class IndexModel : Infrastructure.BasePageModelWithDatabaseContext
 
 		ViewModel =
 			new System.Collections.Generic.List
-			<ViewModels.Pages.Admin.Roles.IndexItemViewModel>();
+			<ViewModels.Pages.Admin.Cluster.IndexItemViewModel>();
 	}
+	#endregion /Constructor(s)
 
+	#region Property(ies)
 	// **********
 	private Microsoft.Extensions.Logging.ILogger<IndexModel> Logger { get; }
 	// **********
 
 	// **********
 	public System.Collections.Generic.IList
-		<ViewModels.Pages.Admin.Roles.IndexItemViewModel> ViewModel
+		<ViewModels.Pages.Admin.Cluster.IndexItemViewModel> ViewModel
 	{ get; private set; }
 	// **********
+	#endregion /Property(ies)
 
+	#region OnGetAsync
 	public async System.Threading.Tasks.Task
 		<Microsoft.AspNetCore.Mvc.IActionResult> OnGetAsync()
 	{
 		try
 		{
-			//ViewModel =
-			//	DatabaseContext.Roles
-			//	.ToList()
-			//	;
-
-			// SELECT * FROM Roles
-
-			//ViewModel =
-			//	await
-			//	DatabaseContext.Roles
-			//	.ToListAsync()
-			//	;
-
 			ViewModel =
 				await
-				DatabaseContext.Roles
+				DatabaseContext.Cluster
 				.OrderBy(current => current.Ordering)
-				.ThenBy(current => current.Name)
-				.Select(current => new ViewModels.Pages.Admin.Roles.IndexItemViewModel
+				.Select(current => new ViewModels.Pages.Admin.Cluster.IndexItemViewModel
 				{
 					Id = current.Id,
-					Name = current.Name,
-					IsActive = current.IsActive,
-					Ordering = current.Ordering,
-					UserCount = current.Users.Count,
-					InsertDateTime = current.InsertDateTime,
-					UpdateDateTime = current.UpdateDateTime.Value,
+					Title = current.Title,
+					Description = current.Description,
 				})
+				.AsNoTracking()
 				.ToListAsync()
 				;
 		}
 		catch (System.Exception ex)
 		{
-			//Logger.Log
-			//	(logLevel: LogLevel.Error, message: ex.Message);
-
-			// LogError() -> using Microsoft.Extensions.Logging;
-			//Logger.LogError
-			//	(message: ex.Message);
-
-			//Logger.LogCritical();
-			//Logger.LogError();
-			//Logger.LogWarning();
-			//Logger.LogInformation();
-			//Logger.LogDebug();
-			//Logger.LogTrace();
-
 			Logger.LogError
 				(message: Constants.Logger.ErrorMessage, args: ex.Message);
 
@@ -95,4 +68,5 @@ public class IndexModel : Infrastructure.BasePageModelWithDatabaseContext
 
 		return Page();
 	}
+	#endregion /OnGetAsync
 }

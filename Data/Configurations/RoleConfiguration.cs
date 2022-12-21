@@ -1,39 +1,27 @@
-﻿namespace Data.Configurations;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-internal class RoleConfiguration : object,
-	Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<Domain.Role>
+namespace Data.Configurations;
+
+internal class RoleConfiguration : IEntityTypeConfiguration<Domain.Role>
 {
 	public RoleConfiguration() : base()
 	{
 	}
 
 	public void Configure
-		(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Domain.Role> builder)
+		(EntityTypeBuilder<Domain.Role> builder)
 	{
-		// **************************************************
-		// **************************************************
-		// **************************************************
 		builder
 			.HasIndex(current => new { current.Name })
-			.IsUnique(unique: true)
-			;
-		// **************************************************
-		// **************************************************
-		// **************************************************
+			.IsUnique(unique: true);
 
-		// **************************************************
-		// **************************************************
-		// **************************************************
 		builder
 			.HasMany(current => current.Users)
 			.WithOne(other => other.Role)
 			.IsRequired(required: false)
 			.HasForeignKey(other => other.RoleId)
 			.OnDelete(deleteBehavior:
-				Microsoft.EntityFrameworkCore.DeleteBehavior.NoAction)
-			;
-		// **************************************************
-		// **************************************************
-		// **************************************************
+				Microsoft.EntityFrameworkCore.DeleteBehavior.NoAction);
 	}
 }

@@ -2,14 +2,14 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Server.Pages.Admin.Roles;
+namespace Server.Pages.Admin.Devices;
 
 [Microsoft.AspNetCore.Authorization
 	.Authorize(Roles = Constants.Role.Admin)]
 public class DetailsModel : Infrastructure.BasePageModelWithDatabaseContext
 {
-	public DetailsModel
-		(Data.DatabaseContext databaseContext,
+	#region Constructor(s)
+	public DetailsModel(Data.DatabaseContext databaseContext,
 		Microsoft.Extensions.Logging.ILogger<DetailsModel> logger) :
 		base(databaseContext: databaseContext)
 	{
@@ -17,15 +17,19 @@ public class DetailsModel : Infrastructure.BasePageModelWithDatabaseContext
 
 		ViewModel = new();
 	}
+	#endregion /Constructor(s)
 
+	#region Property(ies)
 	// **********
 	private Microsoft.Extensions.Logging.ILogger<DetailsModel> Logger { get; }
 	// **********
 
 	// **********
-	public ViewModels.Pages.Admin.Roles.DetailsOrDeleteViewModel ViewModel { get; private set; }
+	public ViewModels.Pages.Admin.Users.DetailsOrDeleteViewModel ViewModel { get; private set; }
 	// **********
+	#endregion /Property(ies)
 
+	#region OnGetAsync
 	public async System.Threading.Tasks.Task
 		<Microsoft.AspNetCore.Mvc.IActionResult> OnGetAsync(System.Guid? id)
 	{
@@ -41,19 +45,25 @@ public class DetailsModel : Infrastructure.BasePageModelWithDatabaseContext
 
 			ViewModel =
 				await
-				DatabaseContext.Roles
-				.Where(current => current.Id == id.Value)
-				.Select(current => new ViewModels.Pages.Admin.Roles.DetailsOrDeleteViewModel()
+				DatabaseContext.Users
+				.Where(current => current.Id == id)
+				.Select(current => new ViewModels.Pages.Admin.Users.DetailsOrDeleteViewModel
 				{
 					Id = current.Id,
-					Name = current.Name,
-					IsActive = current.IsActive,
+					Role = current.Role.Name,
 					Ordering = current.Ordering,
-					UserCount = current.Users.Count,
-					Description = current.Description,
-					InsertDateTime = current.InsertDateTime,
-					UpdateDateTime = current.UpdateDateTime.Value,
+					Username = current.Username,
+					FullName = current.FullName,
+					IsActive = current.IsActive,
+					EmailAddress = current.EmailAddress,
+					IsRoleActive = current.Role.IsActive,
+					CellPhoneNumber = current.CellPhoneNumber,
+					IsProfilePublic = current.IsProfilePublic,
+					AdminDescription = current.AdminDescription,
+					IsEmailAddressVerified = current.IsEmailAddressVerified,
+					IsCellPhoneNumberVerified = current.IsCellPhoneNumberVerified,
 				})
+				//.AsNoTracking()
 				.FirstOrDefaultAsync();
 
 			if (ViewModel == null)
@@ -81,4 +91,5 @@ public class DetailsModel : Infrastructure.BasePageModelWithDatabaseContext
 			await DisposeDatabaseContextAsync();
 		}
 	}
+	#endregion /OnGetAsync
 }

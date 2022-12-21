@@ -1,0 +1,111 @@
+﻿@page
+@model Server.Pages.Admin.Devices.IndexModel
+
+@{
+	var pageTitle =
+		$"{Resources.ButtonCaptions.ListOf} {Resources.DataDictionary.Devices}";
+
+	ViewData[Constants.ViewDataKeyName.PageTitle] = pageTitle;
+}
+
+<section-page-header>
+	@(pageTitle)
+</section-page-header>
+
+<section-page-actions>
+	<a asp-page="Create">
+		@(Html.DtatGetLinkCaptionForCreate())
+	</a>
+</section-page-actions>
+
+<section-table>
+	<table>
+		<caption>
+			@(pageTitle)
+		</caption>
+
+		<thead>
+			<tr>
+				<th>
+					@(Resources.DataDictionary.RowNumber)
+				</th>
+				<th>
+				</th>
+				<th>
+					@(Resources.DataDictionary.Id)
+				</th>
+				<th>
+					@(Resources.DataDictionary.Url)
+				</th>
+				<th>
+					@(Resources.DataDictionary.Cluster)
+				</th>
+				<th>
+					@(Resources.DataDictionary.Owner)
+				</th>
+				<th>
+					@(Resources.DataDictionary.IsActive)
+				</th>
+				<th>
+					@(Resources.DataDictionary.IsSystemic)
+				</th>
+				<th>
+					@(Resources.DataDictionary.InsertDateTime)
+				</th>
+				<th>
+					@(Resources.DataDictionary.UpdateDateTime)
+				</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			@for (int index = 0; index <= Model.ViewModel.Count - 1; index++)
+			{
+				var item = Model.ViewModel[index];
+
+				<tr>
+					@(Html.DtatDisplayRowNumberWithTd(value: index + 1))
+
+					<table-actions>
+						<a asp-page="Details" asp-route-id="@(item.Id)">
+							@(Html.DtatGetIconDetails())
+						</a>
+						<a asp-page="Update" asp-route-id="@(item.Id)">
+							@(Html.DtatGetIconUpdate())
+						</a>
+
+						@if ((item.IsUndeletable == false))
+						{
+							<a asp-page="Delete" asp-route-id="@(item.Id)">
+								@(Html.DtatGetIconDelete())
+							</a>
+						}
+					</table-actions>
+					<td>
+						@(item.Id)
+					</td>
+
+					<td>
+						@(item.Cluster)
+					</td>
+
+					<td>
+						@(item.Address)
+					</td>
+
+					<td>
+						@(item.Owner)
+					</td>
+
+					@(Html.DtatDisplayBooleanWithTd(value: item.IsActive))
+
+					@(Html.DtatDisplayBooleanWithTd(value: item.IsSystemic))
+
+					@(Html.DtatDisplayDateTimeWithTd(value: item.InsertDateTime))
+
+					@(Html.DtatDisplayDateTimeWithTd(value: item.UpdateDateTime))
+				</tr>
+			}
+		</tbody>
+	</table>
+</section-table>

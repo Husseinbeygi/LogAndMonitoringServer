@@ -2,39 +2,40 @@
 
 namespace Data;
 
-public class DatabaseContext : Microsoft.EntityFrameworkCore.DbContext
+public class DatabaseContext : DbContext
 {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public DatabaseContext
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-		(Microsoft.EntityFrameworkCore.DbContextOptions<DatabaseContext> options) : base(options: options)
+		(DbContextOptions<DatabaseContext> options) : base(options: options)
 	{
-		Database.EnsureCreated();
 	}
 
-	public Microsoft.EntityFrameworkCore.DbSet<Domain.Role> Roles { get; set; }
+	public DbSet<Domain.Cluster> Cluster { get; set; }
 
-	public Microsoft.EntityFrameworkCore.DbSet<Domain.User> Users { get; set; }
+	public DbSet<Domain.Device> Device { get; set; }
 
-	public Microsoft.EntityFrameworkCore.DbSet<Domain.UserLogin> UserLogins { get; set; }
+	public DbSet<Domain.Role> Roles { get; set; }
+
+	public DbSet<Domain.User> Users { get; set; }
+
+	public DbSet<Domain.UserLogin> UserLogins { get; set; }
 
 
 
 	protected override void OnConfiguring
-		(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder optionsBuilder)
+		(DbContextOptionsBuilder optionsBuilder)
 	{
 		base.OnConfiguring(optionsBuilder);
 	}
 
 	protected override void OnModelCreating
-		(Microsoft.EntityFrameworkCore.ModelBuilder modelBuilder)
+		(ModelBuilder modelBuilder)
 	{
 		modelBuilder.ApplyConfigurationsFromAssembly
 			(assembly: typeof(Configurations.RoleConfiguration).Assembly);
 	}
 
 	protected override void ConfigureConventions
-		(Microsoft.EntityFrameworkCore.ModelConfigurationBuilder builder)
+		(ModelConfigurationBuilder builder)
 	{
 		builder.Properties<System.DateOnly>()
 			.HaveConversion<Conventions.DateTimeConventions.DateOnlyConverter>()

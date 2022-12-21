@@ -1,0 +1,75 @@
+﻿@page
+@model Server.Pages.Admin.Cluster.IndexModel
+
+@{
+	var pageTitle =
+		$"{Resources.ButtonCaptions.ListOf} {Resources.DataDictionary.Clusters}";
+
+	ViewData[Constants.ViewDataKeyName.PageTitle] = pageTitle;
+}
+
+<section-page-header>
+	@(pageTitle)
+</section-page-header>
+
+<section-page-actions>
+	<a asp-page="Create">
+		@(Html.DtatGetLinkCaptionForCreate())
+	</a>
+</section-page-actions>
+
+<section-table>
+	<table>
+		<caption>
+			@(pageTitle)
+		</caption>
+
+		<thead>
+			<tr>
+				<th>
+					@(Resources.DataDictionary.RowNumber)
+				</th>
+				<th>
+				</th>
+				<th>
+					@(Resources.DataDictionary.Title)
+				</th>
+				<th>
+					@(Resources.DataDictionary.Description)
+				</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			@for (int index = 0; index <= Model.ViewModel.Count - 1; index++)
+			{
+				var item = Model.ViewModel[index];
+
+				<tr>
+					@(Html.DtatDisplayRowNumberWithTd(value: index + 1))
+
+					<table-actions>
+						<a asp-page="Details" asp-route-id="@(item.Id)">
+							@(Html.DtatGetIconDetails())
+						</a>
+						<a asp-page="Update" asp-route-id="@(item.Id)">
+							@(Html.DtatGetIconUpdate())
+						</a>
+
+							<a asp-page="Delete" asp-route-id="@(item.Id)">
+								@(Html.DtatGetIconDelete())
+							</a>
+					</table-actions>
+
+					<td>
+						@(item.Title)
+					</td>
+
+					<td>
+						@(item.Description)
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</section-table>

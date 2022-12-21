@@ -1,0 +1,55 @@
+﻿@page
+@model Server.Pages.Admin.Cluster.UpdateModel
+
+@{
+	var pageTitle =
+		$"{Resources.ButtonCaptions.Update} {Resources.DataDictionary.Cluster}";
+
+	ViewData[Constants.ViewDataKeyName.PageTitle] = pageTitle;
+}
+
+<form method="post">
+
+	<section-form>
+		<fieldset>
+			<section-form-header>
+				@(pageTitle)
+			</section-form-header>
+
+			<partial name="PartialViews/_DisplayPageMessages" />
+
+			<input type="hidden" asp-for="ViewModel.Id" />
+
+			<section-form-field>
+				<label asp-for="ViewModel.Title"></label>
+				<input asp-for="ViewModel.Title" />
+				<span asp-validation-for="ViewModel.Title"></span>
+			</section-form-field>
+
+			<section-form-field>
+				<label asp-for="ViewModel.Description"></label>
+				<input asp-for="ViewModel.Description" />
+				<span asp-validation-for="ViewModel.Description"></span>
+			</section-form-field>
+
+		</fieldset>
+
+		<section-form-buttons>
+			<button-save />
+			<button-reset />
+		</section-form-buttons>
+
+		<section-form-footer>
+			<a asp-page="Index">
+				@(Html.DtatGetLinkCaptionForList())
+			</a>
+			<a asp-page="Details" asp-route-id="@(Model.ViewModel.Id)">
+				@(Html.DtatGetLinkCaptionForDetails())
+			</a>
+			<a asp-page="Delete" asp-route-id="@(Model.ViewModel.Id)">
+				@(Html.DtatGetLinkCaptionForDelete())
+			</a>
+		</section-form-footer>
+	</section-form>
+
+</form>

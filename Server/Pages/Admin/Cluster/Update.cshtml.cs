@@ -1,31 +1,39 @@
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Framework;
+using Domain;
 
-namespace Server.Pages.Admin.Roles;
+namespace Server.Pages.Admin.Cluster;
 
 [Microsoft.AspNetCore.Authorization
 	.Authorize(Roles = Constants.Role.Admin)]
-public class DeleteModel : Infrastructure.BasePageModelWithDatabaseContext
+public class UpdateModel : Infrastructure.BasePageModelWithDatabaseContext
 {
-	public DeleteModel
-		(Data.DatabaseContext databaseContext,
-		Microsoft.Extensions.Logging.ILogger<DeleteModel> logger) :
+	#region Constructor(s)
+	public UpdateModel(Data.DatabaseContext databaseContext,
+		Microsoft.Extensions.Logging.ILogger<UpdateModel> logger) :
 		base(databaseContext: databaseContext)
 	{
 		Logger = logger;
-		ViewModel = new();
-	}
 
+		ViewModel = new();
+
+	}
+	#endregion /Constructor(s)
+
+	#region Property(ies)
 	// **********
-	private Microsoft.Extensions.Logging.ILogger<DeleteModel> Logger { get; }
+	private Microsoft.Extensions.Logging.ILogger<UpdateModel> Logger { get; }
 	// **********
 
 	// **********
 	[Microsoft.AspNetCore.Mvc.BindProperty]
-	public ViewModels.Pages.Admin.Roles.DetailsOrDeleteViewModel ViewModel { get; private set; }
+	public ViewModels.Pages.Admin.Cluster.UpdateViewModel ViewModel { get; set; }
 	// **********
+	#endregion /Property(ies)
 
+	#region OnGetAsync
 	public async System.Threading.Tasks.Task
 		<Microsoft.AspNetCore.Mvc.IActionResult> OnGetAsync(System.Guid? id)
 	{
@@ -41,18 +49,13 @@ public class DeleteModel : Infrastructure.BasePageModelWithDatabaseContext
 
 			ViewModel =
 				await
-				DatabaseContext.Roles
+				DatabaseContext.Cluster
 				.Where(current => current.Id == id.Value)
-				.Select(current => new ViewModels.Pages.Admin.Roles.DetailsOrDeleteViewModel()
+				.Select(current => new ViewModels.Pages.Admin.Cluster.UpdateViewModel
 				{
 					Id = current.Id,
-					Name = current.Name,
-					IsActive = current.IsActive,
-					Ordering = current.Ordering,
-					UserCount = current.Users.Count,
 					Description = current.Description,
-					InsertDateTime = current.InsertDateTime,
-					UpdateDateTime = current.UpdateDateTime.Value,
+					Title = current.Title,
 				})
 				.FirstOrDefaultAsync();
 
@@ -81,48 +84,23 @@ public class DeleteModel : Infrastructure.BasePageModelWithDatabaseContext
 			await DisposeDatabaseContextAsync();
 		}
 	}
+	#endregion /OnGetAsync
 
+	#region OnPostAsync
 	public async System.Threading.Tasks.Task
-		<Microsoft.AspNetCore.Mvc.IActionResult> OnPostAsync(System.Guid? id)
+		<Microsoft.AspNetCore.Mvc.IActionResult> OnPostAsync()
 	{
+		if (ModelState.IsValid == false)
+		{
+			return Page();
+		}
+
 		try
 		{
 			// **************************************************
-			if (id.HasValue == false)
-			{
-				AddToastError
-					(message: Resources.Messages.Errors.IdIsNull);
-
-				return RedirectToPage(pageName: "Index");
-			}
-			// **************************************************
-
-			// **************************************************
-			var hasAnyChildren =
-				await
-				DatabaseContext.Users
-				.Where(current => current.RoleId == id.Value)
-				.AnyAsync();
-
-			if (hasAnyChildren)
-			{
-				// **************************************************
-				var errorMessage = string.Format
-					(format: Resources.Messages.Errors.CascadeDelete,
-					arg0: Resources.DataDictionary.Role);
-
-				AddToastError(message: errorMessage);
-				// **************************************************
-
-				return RedirectToPage(pageName: "Index");
-			}
-			// **************************************************
-
-			// **************************************************
 			var foundedItem =
-				await
-				DatabaseContext.Roles
-				.Where(current => current.Id == id.Value)
+				await DatabaseContext.Cluster
+				.Where(current => current.Id == ViewModel.Id)
 				.FirstOrDefaultAsync();
 
 			if (foundedItem == null)
@@ -135,18 +113,24 @@ public class DeleteModel : Infrastructure.BasePageModelWithDatabaseContext
 			// **************************************************
 
 			// **************************************************
-			var entityEntry =
-				DatabaseContext.Remove(entity: foundedItem);
+			var fixedAdminDescription =
+				Utility.FixText
+				(text: ViewModel.Description);
+
+			//foundedItem.SetUpdateDateTime();
+
+			foundedItem.Title = ViewModel.Title;
+			foundedItem.Description = fixedAdminDescription;
+			// **************************************************
 
 			var affectedRows =
 				await
 				DatabaseContext.SaveChangesAsync();
-			// **************************************************
 
 			// **************************************************
 			var successMessage = string.Format
-				(format: Resources.Messages.Successes.Deleted,
-				arg0: Resources.DataDictionary.Role);
+				(Resources.Messages.Successes.Updated,
+				Resources.DataDictionary.User);
 
 			AddToastSuccess(message: successMessage);
 			// **************************************************
@@ -168,4 +152,5 @@ public class DeleteModel : Infrastructure.BasePageModelWithDatabaseContext
 			await DisposeDatabaseContextAsync();
 		}
 	}
+	#endregion /OnPostAsync
 }
