@@ -32,6 +32,7 @@ builder.Services.AddRouting(options =>
 });
 
 builder.Services.AddRazorPages();
+builder.Services.AddControllers();
 
 builder.Services.Configure<Infrastructure.Settings.ApplicationSettings>
 	(builder.Configuration.GetSection(key: Infrastructure.Settings.ApplicationSettings.KeyName))
@@ -111,5 +112,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCultureCookie();
+app.MapControllers();
 app.MapRazorPages();
 app.Run();

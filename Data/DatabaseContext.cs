@@ -8,6 +8,9 @@ public class DatabaseContext : DbContext
 		(DbContextOptions<DatabaseContext> options) : base(options: options)
 	{
 	}
+	public DbSet<Domain.Parameter> Parameters { get; set; }
+
+	public DbSet<Domain.Log> Log { get; set; }
 
 	public DbSet<Domain.Cluster> Cluster { get; set; }
 
