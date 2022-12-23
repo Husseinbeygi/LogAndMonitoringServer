@@ -11,7 +11,7 @@ public class IndexModel : Infrastructure.BasePageModelWithDatabaseContext
 {
 	#region Constructor(s)
 	public IndexModel(Data.DatabaseContext databaseContext,
-		Microsoft.Extensions.Logging.ILogger<IndexModel> logger) :
+		ILogger<IndexModel> logger) :
 		base(databaseContext: databaseContext)
 	{
 		Logger = logger;

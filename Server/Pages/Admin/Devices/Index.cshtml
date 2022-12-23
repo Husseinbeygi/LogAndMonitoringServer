@@ -67,6 +67,9 @@
 					@(Html.DtatDisplayRowNumberWithTd(value: index + 1))
 
 					<table-actions>
+						<a asp-page="Logs" asp-route-id="@(item.Id)">
+							@(Html.DtatGetIconCustom("bi-clipboard-data"))
+						</a>
 						<a asp-page="Details" asp-route-id="@(item.Id)">
 							@(Html.DtatGetIconDetails())
 						</a>

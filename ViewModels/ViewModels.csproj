@@ -7,6 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Controllers\NewFolder\**" />
+	  <EmbeddedResource Remove="Controllers\NewFolder\**" />
+	  <None Remove="Controllers\NewFolder\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\Domain\Domain.csproj" />
 		<ProjectReference Include="..\Resources\Resources.csproj" />
 	</ItemGroup>

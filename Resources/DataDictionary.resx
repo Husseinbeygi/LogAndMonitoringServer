@@ -489,4 +489,43 @@
   <data name="Devices" xml:space="preserve">
     <value>Devices</value>
   </data>
+  <data name="ClassName" xml:space="preserve">
+    <value>Class Name</value>
+  </data>
+  <data name="Exception" xml:space="preserve">
+    <value>Exception</value>
+  </data>
+  <data name="HttpReferrer" xml:space="preserve">
+    <value>Http Referrer</value>
+  </data>
+  <data name="InnerException" xml:space="preserve">
+    <value>Inner Exception</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Log" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="Logs" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="MethodName" xml:space="preserve">
+    <value>Method Name</value>
+  </data>
+  <data name="Namespace" xml:space="preserve">
+    <value>Namespace</value>
+  </data>
+  <data name="RemoteIP" xml:space="preserve">
+    <value>Remote IP</value>
+  </data>
+  <data name="RequestPath" xml:space="preserve">
+    <value>Request Path</value>
+  </data>
+  <data name="TimeStamp" xml:space="preserve">
+    <value>Time Stamp</value>
+  </data>
 </root>

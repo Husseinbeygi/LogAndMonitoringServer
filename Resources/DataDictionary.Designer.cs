@@ -178,6 +178,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class Name.
+        /// </summary>
+        public static string ClassName {
+            get {
+                return ResourceManager.GetString("ClassName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cluster.
         /// </summary>
         public static string Cluster {
@@ -349,6 +358,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exception.
+        /// </summary>
+        public static string Exception {
+            get {
+                return ResourceManager.GetString("Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Female.
         /// </summary>
         public static string Female {
@@ -412,6 +430,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Http Referrer.
+        /// </summary>
+        public static string HttpReferrer {
+            get {
+                return ResourceManager.GetString("HttpReferrer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Icon.
         /// </summary>
         public static string Icon {
@@ -444,6 +471,15 @@ namespace Resources {
         public static string ImageUrl {
             get {
                 return ResourceManager.GetString("ImageUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inner Exception.
+        /// </summary>
+        public static string InnerException {
+            get {
+                return ResourceManager.GetString("InnerException", resourceCulture);
             }
         }
         
@@ -664,6 +700,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        public static string Level {
+            get {
+                return ResourceManager.GetString("Level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link.
         /// </summary>
         public static string Link {
@@ -687,6 +732,24 @@ namespace Resources {
         public static string ListOfItems {
             get {
                 return ResourceManager.GetString("ListOfItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log.
+        /// </summary>
+        public static string Log {
+            get {
+                return ResourceManager.GetString("Log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs.
+        /// </summary>
+        public static string Logs {
+            get {
+                return ResourceManager.GetString("Logs", resourceCulture);
             }
         }
         
@@ -727,11 +790,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string Message {
+            get {
+                return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Method Name.
+        /// </summary>
+        public static string MethodName {
+            get {
+                return ResourceManager.GetString("MethodName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namespace.
+        /// </summary>
+        public static string Namespace {
+            get {
+                return ResourceManager.GetString("Namespace", resourceCulture);
             }
         }
         
@@ -898,6 +988,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remote IP.
+        /// </summary>
+        public static string RemoteIP {
+            get {
+                return ResourceManager.GetString("RemoteIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remover User.
         /// </summary>
         public static string RemoverUser {
@@ -912,6 +1011,15 @@ namespace Resources {
         public static string RemoverUserId {
             get {
                 return ResourceManager.GetString("RemoverUserId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request Path.
+        /// </summary>
+        public static string RequestPath {
+            get {
+                return ResourceManager.GetString("RequestPath", resourceCulture);
             }
         }
         
@@ -1029,6 +1137,15 @@ namespace Resources {
         public static string SubMenuItems {
             get {
                 return ResourceManager.GetString("SubMenuItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Stamp.
+        /// </summary>
+        public static string TimeStamp {
+            get {
+                return ResourceManager.GetString("TimeStamp", resourceCulture);
             }
         }
         

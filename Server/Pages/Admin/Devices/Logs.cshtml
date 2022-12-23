@@ -1,0 +1,145 @@
+﻿@page
+@model Server.Pages.Admin.Devices.LogsModel
+
+@{
+	var pageTitle =
+		$"{Resources.ButtonCaptions.ListOf} {Resources.DataDictionary.Logs}";
+
+	ViewData[Constants.ViewDataKeyName.PageTitle] = pageTitle;
+}
+
+
+@section StyleSheets {
+	<link href="~/js/datatables/jquery.datatables.min.css" rel="stylesheet" />
+}
+
+<section-page-header>
+	@(pageTitle)
+</section-page-header>
+
+<section-page-actions>
+	<a asp-page="Create">
+		@(Html.DtatGetLinkCaptionForCreate())
+	</a>
+</section-page-actions>
+
+<section-table>
+	<table id="datatable">
+		<caption>
+			@(pageTitle)
+		</caption>
+
+		<thead>
+			<tr>
+				<th>
+					@(Resources.DataDictionary.RowNumber)
+				</th>
+				<td></td>
+				<th>
+					@(Resources.DataDictionary.TimeStamp)
+				</th>
+				<th>
+					@(Resources.DataDictionary.Level)
+				</th>
+				<th>
+					@(Resources.DataDictionary.RemoteIP)
+				</th>
+				<th>
+					@(Resources.DataDictionary.Namespace)
+				</th>
+				<th>
+					@(Resources.DataDictionary.ClassName)
+				</th>
+				<th>
+					@(Resources.DataDictionary.MethodName)
+				</th>
+				<th>
+					@(Resources.DataDictionary.RequestPath)
+				</th>
+				<th>
+					@(Resources.DataDictionary.Message)
+				</th>
+				<th>
+					@(Resources.DataDictionary.Exception)
+				</th>
+				<th>
+					@(Resources.DataDictionary.InnerException)
+				</th>
+				<th>
+					@(Resources.DataDictionary.HttpReferrer)
+				</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			@for (int index = 0; index <= Model.ViewModel.Count - 1; index++)
+			{
+				var item = Model.ViewModel[index];
+
+				<tr>
+					@(Html.DtatDisplayRowNumberWithTd(value: index + 1))
+					<table-actions>
+						<a asp-page="Details" asp-route-id="@(item.Id)">
+							@(Html.DtatGetIconDetails())
+						</a>
+					</table-actions>
+
+					@(Html.DtatDisplayDateTimeWithTd(value: item.TimeStamp))
+
+					<td>
+						@(item.Level)
+					</td>
+
+					<td>
+						@(item.RemoteIP)
+					</td>
+
+					<td>
+						@(item.Namespace)
+					</td>
+
+					<td>
+						@(item.ClassName)
+					</td>
+
+					<td>
+						@(item.MethodName)
+					</td>
+
+					<td>
+						@(item.RequestPath)
+					</td>
+
+					<td title="@(item.Message)" class="flex-wrap">
+						@(item.Message)
+					</td>
+
+					<td title="@(item.Exception)" class="flex-wrap">
+						@(item.Exception)
+					</td>
+
+					<td title="@(item.InnerException)" class="flex-wrap">
+						@(item.InnerException)
+					</td>
+
+					<td>
+						@(item.HttpReferrer)
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</section-table>
+
+
+@section Scripts {
+	<script src="~/js/datatables/jquery.datatables.js"></script>
+	<script src="~/js/datatables/datatables.js"></script>
+	<script src="~/js/datatables/datatables.bootstrap.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#datatable').dataTable();
+		});
+	</script>
+
+}
